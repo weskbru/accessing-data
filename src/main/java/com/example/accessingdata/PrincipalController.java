@@ -1,7 +1,8 @@
 package com.example.accessingdata;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller // isto significa que é uma classe de um controlador
-@RequestMapping(path = "/demo") // isto significa que os caminhos do demo
+@RequestMapping(path = "/demo") // Isso significa que os URLs começam com / demo (após o caminho do aplicativo)
+@CrossOrigin(origins = "*" ) // para aceita qualquer requisiçoes de qualquer endareço
 
 public class PrincipalController {
     @Autowired // faz o start do objeto
@@ -35,12 +38,18 @@ public class PrincipalController {
         return "ok gravado";
     }
 
-
+    
     // criaçao do metodo visualização de todos os usuarios ja cadastrado 
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Usuario> getAllusuario() {
-        return uRepository.findAll();
+    
+      return uRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+      // retorna o uRepository.findAll
+       
     }
+
+    
+    
 
     // metodo criado para atualiza usuario ou substituir
     // PUT para atualiza 
